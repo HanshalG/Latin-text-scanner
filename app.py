@@ -6,6 +6,7 @@ from pywebio import start_server
 from processLines import processLines
 from techniques import alliteration, enjambement
 import latindictionary_io
+from pywebio.session import set_env
 
 def linesEntered(text):
 
@@ -114,10 +115,9 @@ def goBack():
 
 
 
-
 def startApp():
 
-    put_html("""<link rel="icon" href="https://latinpoetryscanner.herokuapp.com/gorilla.ico">""")
+    set_env(title="Latin Poetry Scanner")
 
     put_markdown("# Latin Poetry Scanner")
 
