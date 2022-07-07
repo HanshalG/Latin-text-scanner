@@ -1,6 +1,6 @@
 from pywebio.input import *
 from pywebio.output import *
-from pywebio import start_server
+from pywebio import platform
 from processLines import processLines
 from techniques import alliteration, enjambement
 import latindictionary_io
@@ -148,4 +148,4 @@ impulerit. Tantaene animīs caelestibus īrae?
 
 
 if __name__ == "__main__":
-    start_server(main, port=8080, debug=True)
+    platform.tornado.start_server(main, port=8080, debug=False)
