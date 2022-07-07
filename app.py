@@ -1,6 +1,6 @@
 from pywebio.input import *
 from pywebio.output import *
-from pywebio import platform
+from pywebio import start_server
 from processLines import processLines
 from techniques import alliteration, enjambement
 import latindictionary_io
@@ -113,7 +113,7 @@ def goBack():
 
 
 
-def main():
+def startApp():
     put_markdown("# Latin Poetry Scanner")
 
     loadHomePage()
@@ -148,4 +148,5 @@ impulerit. Tantaene animīs caelestibus īrae?
 
 
 if __name__ == "__main__":
-    platform.tornado.start_server(main, port=8080, debug=False)
+    start_server(startApp, port=8080)
+
