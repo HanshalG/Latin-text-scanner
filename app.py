@@ -116,6 +116,9 @@ def goBack():
 
 
 def startApp():
+
+    put_html("""<link rel="icon" href="https://latinpoetryscanner.herokuapp.com/gorilla.ico">""")
+
     put_markdown("# Latin Poetry Scanner")
 
     loadHomePage()
