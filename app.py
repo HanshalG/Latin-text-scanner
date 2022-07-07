@@ -1,3 +1,5 @@
+import argparse
+
 from pywebio.input import *
 from pywebio.output import *
 from pywebio import start_server
@@ -148,5 +150,8 @@ impulerit. Tantaene animīs caelestibus īrae?
 
 
 if __name__ == "__main__":
-    start_server(startApp)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-p', '--port', type=int, default=8080)
+    args = parser.parse_args()
+    start_server(startApp, port=args.port)
 
