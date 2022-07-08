@@ -7,6 +7,7 @@ from processLines import processLines
 from techniques import alliteration, enjambement
 import latindictionary_io
 from pywebio.session import set_env
+from scansion import scan_lines
 
 def linesEntered(text):
 
@@ -19,13 +20,14 @@ def linesEntered(text):
     alliterations = alliteration(processedLines)
     enjambements = enjambement(processedLines)
     techs = alliterations + enjambements
+    scannedLines = scan_lines(text)
 
     with use_scope("scopeRows"):
 
         put_processbar('translations', label="Scanning", auto_close=True)
 
         put_row([
-            put_scrollable(put_markdown("{}".format(text)), height=500),
+            put_scrollable(put_text(scannedLines), height=500),
             put_scrollable(put_scope("techniques", content=put_text("placeholder")), height=500)
         ])
 
@@ -130,7 +132,8 @@ def loadHomePage():
             - Make sure to have line breaks inbetween lines
             - Techniques are just suggestions
 
-            Translations from [latindictionary.io](https://www.latindictionary.io/)""")
+            Translations from [latindictionary.io](https://www.latindictionary.io/)
+            Scansion from latin-scansion""")
         put_markdown("Access latin lines from here: [Latin Library](https://www.thelatinlibrary.com/)")
         textBox = textarea(placeholder="Enter latin lines here: ", rows=10,
                            value="""Arma virumque canō, Trōiae quī prīmus ab ōrīs
