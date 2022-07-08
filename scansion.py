@@ -1,4 +1,4 @@
-from cltk.prosody.lat.hexameter_scanner import HexameterScanner
+from hexameter_scanner import HexameterScanner
 import string
 
 def scan_lines(lines):

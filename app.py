@@ -7,7 +7,7 @@ from processLines import processLines
 from techniques import alliteration, enjambement
 import latindictionary_io
 from pywebio.session import set_env
-from scansion import scan_lines
+#from scansion import scan_lines
 
 def linesEntered(text):
 
@@ -20,14 +20,14 @@ def linesEntered(text):
     alliterations = alliteration(processedLines)
     enjambements = enjambement(processedLines)
     techs = alliterations + enjambements
-    scannedLines = scan_lines(text)
+    #scannedLines = scan_lines(text)
 
     with use_scope("scopeRows"):
 
         put_processbar('translations', label="Scanning", auto_close=True)
 
         put_row([
-            put_scrollable(put_text(scannedLines), height=500),
+            put_scrollable(put_markdown(text), height=500),
             put_scrollable(put_scope("techniques", content=put_text("placeholder")), height=500)
         ])
 
