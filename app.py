@@ -202,8 +202,11 @@ def identifyDefiniteDativeAndAblatives(pofInfo, inflsInfo):
     for i in range(len(pofInfo)):
         for j in range(len(pofInfo[i])):
             if all(elem == "noun" for elem in pofInfo[i][j]) and pofInfo[i][j] != []:
-                if all(e['case'] in ['locative', 'dative', 'ablative'] for e in inflsInfo[i][j]):
-                    output.append([i,j])
+                try:
+                    if all(e['case'] in ['locative', 'dative', 'ablative'] for e in inflsInfo[i][j]):
+                        output.append([i,j])
+                except Exception as e:
+                    print("error ", e, inflsInfo[i][j], [i,j])
 
     return output
 

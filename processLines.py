@@ -12,8 +12,9 @@ def processLines(inp):
     for line in lines:
         if line != "":
             words = line.split()
-            #print(words)
-            output.append(words)
+            no_integers = [x for x in words if not (x.isdigit()
+                                                     or x[0] == '-' and x[1:].isdigit())]
+            output.append(no_integers)
 
     output = removePunctuation(output)
 
