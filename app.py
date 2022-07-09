@@ -26,6 +26,8 @@ def linesEntered(text):
 
         put_processbar('translations', label="Scanning", auto_close=True)
 
+        put_html("""<span style="color: #ff0000">Verb </span> <span style="color: #FF00FF">Ablative/Dative </span> <span style="color: #B0C4DE">Conjunction </span> <span style="color: #0000FF">Preposition </span>""").style("padding-top:10px; padding-bottom:10px")
+
         put_row([
             put_scrollable(put_scope("text", content=put_markdown(text)), height=500),
             put_scrollable(put_scope("techniques", content=put_text("placeholder")), height=500)
@@ -96,9 +98,17 @@ def linesEntered(text):
                         elif info['pofs'] == 'adjective':
                             grammarInfo.append("Adjective: {0} {1} {2}".format(info['case'], info['gend'], info['num']))
                         #conjunction
+                        elif info['pofs'] == 'conjunction':
+                            grammarInfo.append("Conjunction")
                         #pronoun
+                        elif info['pofs'] == 'pronoun':
+                            grammarInfo.append("Pronoun: {} {} {}".format(info['case'], info['gend'], info['num']))
                         #preposition
+                        elif info['pofs'] == "preposition":
+                            grammarInfo.append("Preposition")
                         #verb participle
+                        elif info['pofs'] == "verb participle":
+                            grammarInfo.append("Verb Participle: {} {} {} {}".format(info['tense'], info['case'], info['gend'], info['num']))
                         else:
                             grammarInfo.append("{}: {}".format(info['pofs'], info))
 
@@ -130,6 +140,8 @@ def linesEntered(text):
 
     verbWords = identifyDefiniteVerbs(pofsForWord, inflsForWord)
     abldatWords = identifyDefiniteDativeAndAblatives(pofsForWord, inflsForWord)
+    conjunctionWords = identifyDefiniteConjunctions(pofsForWord, inflsForWord)
+    prepositionWords = identifyDefinitePrepositions(pofsForWord, inflsForWord)
 
     outputString =""
 
@@ -141,6 +153,10 @@ def linesEntered(text):
                 outputString += """<span style="color: #ff0000">{} </span>""".format(processedLines[i][j])
             elif [i,j] in abldatWords:
                 outputString += """<span style="color: #FF00FF">{} </span>""".format(processedLines[i][j])
+            elif [i, j] in conjunctionWords:
+                outputString += """<span style="color: #B0C4DE">{} </span>""".format(processedLines[i][j])
+            elif [i,j] in prepositionWords:
+                outputString += """<span style="color: #0000FF">{} </span>""".format(processedLines[i][j])
             else:
                 outputString += processedLines[i][j] + " "
 
@@ -210,7 +226,28 @@ def identifyDefiniteVerbs(pofInfo, inflsInfo):
     for i in range(len(pofInfo)):
         for j in range(len(pofInfo[i])):
             if all(elem == "verb" for elem in pofInfo[i][j]) and pofInfo[i][j] != []:
-                print("only verb", pofInfo[i][j])
+                output.append([i,j])
+
+    return output
+
+def identifyDefiniteConjunctions(pofInfo, inflsInfo):
+
+    output = []
+
+    for i in range(len(pofInfo)):
+        for j in range(len(pofInfo[i])):
+            if all(elem == "conjunction" for elem in pofInfo[i][j]) and pofInfo[i][j] != []:
+                output.append([i,j])
+
+    return output
+
+def identifyDefinitePrepositions(pofInfo, inflsInfo):
+
+    output = []
+
+    for i in range(len(pofInfo)):
+        for j in range(len(pofInfo[i])):
+            if all(elem == "preposition" for elem in pofInfo[i][j]) and pofInfo[i][j] != []:
                 output.append([i,j])
 
     return output
