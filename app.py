@@ -179,6 +179,26 @@ def loadHomePage():
         textBox = textarea(placeholder="Enter latin lines here: ", rows=10,
                            value="""Arma virumque canō, Trōiae quī prīmus ab ōrīs
 Ītaliam, fātō profugus, Lāvīniaque vēnit
+lītora, multum ille et terrīs iactātus et altō
+vī superum saevae memorem Iūnōnis ob īram;
+multa quoque et bellō passus, dum conderet urbem,               5
+inferretque deōs Latiō, genus unde Latīnum,
+Albānīque patrēs, atque altae moenia Rōmae.
+
+Mūsa, mihī causās memorā, quō nūmine laesō,
+quidve dolēns, rēgīna deum tot volvere cāsūs
+īnsīgnem pietāte virum, tot adīre labōrēs                                   10
+impulerit. Tantaene animīs caelestibus īrae?
+
+Urbs antīqua fuit, Tyriī tenuēre colōnī,
+Karthāgō, Ītaliam contrā Tiberīnaque longē
+ōstia, dīves opum studiīsque asperrima bellī,
+quam Iūnō fertur terrīs magis omnibus ūnam                           15
+posthabitā coluisse Samō; hīc illius arma,
+hīc currus fuit; hōc rēgnum dea gentibus esse,
+sī quā Fāta sinant, iam tum tenditque fovetque.
+Prōgeniem sed enim Trōiānō ā sanguine dūcī
+audierat, Tyriās olim quae verteret arcēs;                                   20
 """)
 
     linesEntered(textBox)
