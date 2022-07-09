@@ -129,9 +129,9 @@ def linesEntered(text):
     #colour coding logic
 
     verbWords = identifyDefiniteVerbs(pofsForWord, inflsForWord)
+    abldatWords = identifyDefiniteDativeAndAblatives(pofsForWord, inflsForWord)
+
     outputString =""
-    #for word in words:
-        #print(processedLines[word[0]][word[1]])
 
     clear("text")
 
@@ -139,6 +139,8 @@ def linesEntered(text):
         for j in range(len(processedLines[i])):
             if [i,j] in verbWords:
                 outputString += """<span style="color: #ff0000">{} </span>""".format(processedLines[i][j])
+            elif [i,j] in abldatWords:
+                outputString += """<span style="color: #FF00FF">{} </span>""".format(processedLines[i][j])
             else:
                 outputString += processedLines[i][j] + " "
 
@@ -193,6 +195,17 @@ def identifyDefiniteVerbs(pofInfo, inflsInfo):
 
     return output
 
+def identifyDefiniteDativeAndAblatives(pofInfo, inflsInfo):
+
+    output = []
+
+    for i in range(len(pofInfo)):
+        for j in range(len(pofInfo[i])):
+            if all(elem == "noun" for elem in pofInfo[i][j]) and pofInfo[i][j] != []:
+                if all(e['case'] in ['locative', 'dative', 'ablative'] for e in inflsInfo[i][j]):
+                    output.append([i,j])
+
+    return output
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
