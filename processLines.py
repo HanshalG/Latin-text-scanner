@@ -12,7 +12,10 @@ def processLines(inp):
     for line in lines:
         if line != "":
             words = line.split()
+            #print(words)
             output.append(words)
+
+    output = removePunctuation(output)
 
     return output
 

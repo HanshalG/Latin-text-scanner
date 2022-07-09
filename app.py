@@ -27,7 +27,7 @@ def linesEntered(text):
         put_processbar('translations', label="Scanning", auto_close=True)
 
         put_row([
-            put_scrollable(put_markdown(text), height=500),
+            put_scrollable(put_scope("text", content=put_markdown(text)), height=500),
             put_scrollable(put_scope("techniques", content=put_text("placeholder")), height=500)
         ])
 
@@ -49,6 +49,9 @@ def linesEntered(text):
     totalWords = sum( [len(line) for line in processedLines])
     count = 0
 
+    pofsForWord = [[[] for x in range(len(processedLines[y]))] for y in range(len(processedLines))]
+    inflsForWord = [[[] for x in range(len(processedLines[y]))] for y in range(len(processedLines))]
+
     for i in range(len(processedLines)):
         for j in range(len(processedLines[i])):
             count +=1
@@ -58,7 +61,7 @@ def linesEntered(text):
                 for entry in data[0]:
                     grammarInfo = []
 
-                    #print(entry)
+                    print(entry)
 
                     #print(type(entry['entry']['infl']))
 
@@ -68,12 +71,24 @@ def linesEntered(text):
 
 
                     for info in entry['entry']['infl']:
+
+                        pofsForWord[i][j].append(info['pofs'])
+                        inflsForWord[i][j].append(info)
+
                         #entry is noun format as case number declension
                         if info['pofs'] == 'noun':
                             grammarInfo.append("Noun: {0} {1} {2} Declension".format(info['case'], info['num'], info['decl']))
                         #verb  person number tense voice mood
                         elif info['pofs'] == 'verb':
-                            grammarInfo.append("Verb: {0} person {1} {2} {3} {4}".format(info['pers'], info['num'], info['tense'], info['voice'], info['mood']))
+                            try:
+                                grammarInfo.append("Verb: {0} person {1} {2} {3} {4}".format(info['pers'], info['num'], info['tense'], info['voice'], info['mood']))
+                            except Exception as e:
+                                print(e)
+                                if entry['entry']['dict']['kind'] == 'deponent':
+                                    grammarInfo.append(
+                                        "Verb: {0} person {1} {2} {3} {4}".format(info['pers'], info['num'],
+                                                                                  info['tense'], "deponent",
+                                                                                  info['mood']))
 
                             #add case if deponent(not transitive) (no mood)
 
@@ -106,7 +121,30 @@ def linesEntered(text):
             except Exception as e:
                 print(e)
                 pass
+
             set_processbar(name='translations', value=count/totalWords, label="Scanning")
+
+    #print(pofsForWord, inflsForWord)
+
+    #colour coding logic
+
+    verbWords = identifyDefiniteVerbs(pofsForWord, inflsForWord)
+    outputString =""
+    #for word in words:
+        #print(processedLines[word[0]][word[1]])
+
+    clear("text")
+
+    for i in range(len(processedLines)):
+        for j in range(len(processedLines[i])):
+            if [i,j] in verbWords:
+                outputString += """<span style="color: #ff0000">{} </span>""".format(processedLines[i][j])
+            else:
+                outputString += processedLines[i][j] + " "
+
+        put_html("""<p>{}
+            </p>""".format(outputString), scope="text")
+        outputString = ""
 
 
 def goBack():
@@ -126,9 +164,10 @@ def startApp():
     loadHomePage()
 
 def loadHomePage():
+
     with use_scope("scopeMain"):
         put_markdown("""This is a latin poetry scanner
-            It can provide translation, scansion and poetic technique suggestions
+            It can provide translation, scansion and poetic technique suggestions to aid students to interpret latin verse more wholistically
             - Make sure to have line breaks inbetween lines
             - Techniques are just suggestions
 
@@ -138,21 +177,21 @@ def loadHomePage():
         textBox = textarea(placeholder="Enter latin lines here: ", rows=10,
                            value="""Arma virumque canō, Trōiae quī prīmus ab ōrīs
 Ītaliam, fātō profugus, Lāvīniaque vēnit
-lītora, multum ille et terrīs iactātus et altō
-vī superum saevae memorem Iūnōnis ob īram;
-multa quoque et bellō passus, dum conderet urbem,               5
-inferretque deōs Latiō, genus unde Latīnum,
-Albānīque patrēs, atque altae moenia Rōmae.
-
-Mūsa, mihī causās memorā, quō nūmine laesō,
-quidve dolēns, rēgīna deum tot volvere cāsūs
-īnsīgnem pietāte virum, tot adīre labōrēs                                   10
-impulerit. Tantaene animīs caelestibus īrae?
-
 """)
 
     linesEntered(textBox)
 
+def identifyDefiniteVerbs(pofInfo, inflsInfo):
+
+    output = []
+
+    for i in range(len(pofInfo)):
+        for j in range(len(pofInfo[i])):
+            if all(elem == "verb" for elem in pofInfo[i][j]) and pofInfo[i][j] != []:
+                print("only verb", pofInfo[i][j])
+                output.append([i,j])
+
+    return output
 
 
 if __name__ == "__main__":
