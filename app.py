@@ -29,7 +29,7 @@ def linesEntered(text):
         put_html("""<span style="color: #ff0000">Verb </span> <span style="color: #FF00FF">Ablative/Dative </span> <span style="color: #B0C4DE">Conjunction </span> <span style="color: #0000FF">Preposition </span>""").style("padding-top:10px; padding-bottom:10px")
 
         put_row([
-            put_scrollable(put_scope("text", content=put_markdown(text)), height=500),
+            put_scrollable(put_scope("text", content=put_markdown(text).style("line-height: 200%")), height=500),
             put_scrollable(put_scope("techniques", content=put_text("placeholder")), height=500)
         ])
 
