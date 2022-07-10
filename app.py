@@ -189,13 +189,11 @@ def startApp():
 def loadHomePage():
 
     with use_scope("scopeMain"):
-        put_markdown("""This is a latin poetry scanner
-            It can provide translation, scansion and poetic technique suggestions to aid students to interpret latin verse more wholistically
+        put_markdown("""This is a latin poetry scanner which can provide translation, scansion and poetic technique suggestions to aid students to interpret latin verse more holistically. Translations, grammar parsing and poetic techniques will be listed under the line numbers and colour coding will be applied to certain graammatical constructs after scanning has finished. 
             - Make sure to have line breaks inbetween lines
             - Techniques are just suggestions
 
-            Translations from [latindictionary.io](https://www.latindictionary.io/)
-            Scansion from latin-scansion""")
+            Translations and parsing from [latindictionary.io](https://www.latindictionary.io/)""")
         put_markdown("Access latin lines from here: [Latin Library](https://www.thelatinlibrary.com/)")
         textBox = textarea(placeholder="Enter latin lines here: ", rows=10,
                            value="""Arma virumque canō, Trōiae quī prīmus ab ōrīs
