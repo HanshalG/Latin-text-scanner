@@ -120,7 +120,7 @@ def linesEntered(text):
                     except Exception as e:
                         print(e)
                         #FIX FOR DICT ENTRIES THAT HAVE A LIST, I THINK ITS DEPONENT VERBS
-                        outputString = "***{}***: {}".format(processedLines[i][j], entry['entry']['mean'])
+                        outputString = "***{}***:\n{}".format(processedLines[i][j], entry['entry']['mean'])
 
                     if grammarInfo != []:
                         for z in grammarInfo:
