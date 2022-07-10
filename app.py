@@ -115,7 +115,12 @@ def linesEntered(text):
 
                     #print(grammarInfo)
 
-                    outputString = "{}: {}, {}".format(processedLines[i][j], entry['word'], entry['entry']['mean'])
+                    try:
+                        outputString = "***{}***:\n{}".format(entry['entry']['dict']['hdwd'], entry['entry']['mean'])
+                    except Exception as e:
+                        print(e)
+                        #FIX FOR DICT ENTRIES THAT HAVE A LIST, I THINK ITS DEPONENT VERBS
+                        outputString = "***{}***: {}".format(processedLines[i][j], entry['entry']['mean'])
 
                     if grammarInfo != []:
                         for z in grammarInfo:
@@ -177,7 +182,7 @@ def startApp():
 
     set_env(title="Latin Poetry Scanner")
 
-    put_markdown("# Latin Poetry Scanner")
+    put_markdown("""# Latin Poetry Scanner""")
 
     loadHomePage()
 

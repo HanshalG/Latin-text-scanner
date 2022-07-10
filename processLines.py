@@ -12,11 +12,19 @@ def processLines(inp):
     for line in lines:
         if line != "":
             words = line.split()
-            no_integers = [x for x in words if not (x.isdigit()
+
+            tokenised=[]
+
+            for i in range(len(words)):
+                words[i] = words[i].translate(str.maketrans('', '', string.punctuation))
+                if words[i].endswith("que"):
+                    tokenised.append(words[i][:-3])
+                    tokenised.append("que")
+                else:
+                    tokenised.append(words[i])
+            no_integers = [x for x in tokenised if not (x.isdigit()
                                                      or x[0] == '-' and x[1:].isdigit())]
             output.append(no_integers)
-
-    output = removePunctuation(output)
 
     return output
 
