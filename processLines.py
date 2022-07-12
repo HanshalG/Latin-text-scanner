@@ -20,7 +20,7 @@ def processLines(inp):
                 if words[i].endswith("que"):
                     tokenised.append(words[i][:-3])
                     tokenised.append("que")
-                if words[i].endswith("ve"):
+                elif words[i].endswith("ve"):
                     tokenised.append(words[i][:-2])
                     tokenised.append("ve")
                 else:
@@ -36,3 +36,23 @@ def removePunctuation(inp):
         for j in range(0, len(inp[i])):
             inp[i][j] = inp[i][j].translate(str.maketrans('', '', string.punctuation))
     return inp
+
+def convertLinesIndexToWordsIndex(inp, processed):
+    #inp [i,j]
+    x = 0
+    for i in range(processed):
+        for j in range(processed[i]):
+            x+=1
+            if inp == [i,j]:
+                return x
+    return None
+
+def convertWordsIndextoLinesIndex(inp, processed):
+
+    x = 0
+
+    for i in range(processed):
+        for j in range(processed[i]):
+            x += 1
+            if inp == x:
+                return [i, j]

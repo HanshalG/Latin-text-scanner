@@ -3,7 +3,7 @@ import argparse
 from pywebio.input import *
 from pywebio.output import *
 from pywebio import start_server
-from processLines import processLines
+from processLines import processLines, convertWordsIndextoLinesIndex, convertLinesIndexToWordsIndex
 from techniques import alliteration, enjambement
 import latindictionary_io
 from pywebio.session import set_env
@@ -63,7 +63,7 @@ def linesEntered(text):
                 for entry in data[0]:
                     grammarInfo = []
 
-                    print(entry)
+                    #print(entry)
 
                     #print(type(entry['entry']['infl']))
 
@@ -79,7 +79,7 @@ def linesEntered(text):
 
                         #entry is noun format as case number declension
                         if info['pofs'] == 'noun':
-                            grammarInfo.append("Noun: **{0}** {1} {2} Declension".format(info['case'], info['num'], info['decl']))
+                            grammarInfo.append("Noun: **{0}** {1} {2} {3} Declension".format(info['case'], info['gend'], info['num'], info['decl']))
                         #verb  person number tense voice mood
                         elif info['pofs'] == 'verb':
                             try:
@@ -147,6 +147,16 @@ def linesEntered(text):
     abldatWords = identifyDefiniteDativeAndAblatives(pofsForWord, inflsForWord)
     conjunctionWords = identifyDefiniteConjunctions(pofsForWord, inflsForWord)
     prepositionWords = identifyDefinitePrepositions(pofsForWord, inflsForWord)
+
+    pofsForWordNOLINES = [x for xs in pofsForWord for x in xs]
+    inflsForWordNOLINES = [x for xs in inflsForWord for x in xs]
+    wordsNOLINES = [x for xs in processedLines for x in xs]
+
+    put_markdown("# Matches")
+    for i in range(totalWords):
+        matches = nearbyMatches(inflsForWordNOLINES, 10, wordsNOLINES, i)
+        if matches != []:
+            put_text(wordsNOLINES[i], matches)
 
     outputString ="1. "
 
@@ -270,6 +280,29 @@ def identifyDefiniteDativeAndAblatives(pofInfo, inflsInfo):
                     print("error ", e, inflsInfo[i][j], [i,j])
 
     return output
+
+def nearbyMatches(inflsInfo, searchRadius, words, targetIndex):
+
+    #inputAsJustALiSt NOT LISTOFLISTS
+
+    matches = []
+
+    for i in range(-searchRadius, searchRadius):
+        if targetIndex + i >= 0 and i != 0:
+            try:
+                for inflTarget in inflsInfo[targetIndex + i]:
+                    for inflMain in inflsInfo[targetIndex]:
+                        if (inflMain['pofs'] == 'noun' and inflTarget['pofs'] == 'adjective') or (inflMain['pofs'] == 'adjective' and inflTarget['pofs'] == 'noun'):
+                            if inflMain['case'] == inflTarget['case'] and inflMain['gend'] == inflTarget['gend'] and inflMain['num'] == inflTarget['num']:
+                                matches.append([targetIndex + i, words[targetIndex + i], {"case":inflMain['case'],
+                                                                        "gend":inflMain['gend'],
+                                                                        "num":inflMain['num']}])
+
+            except IndexError:
+                pass
+
+    return matches
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
