@@ -184,15 +184,15 @@ def linesEntered(text):
         #put_button("Line {}".format(i + 1), onclick=scroll_to(scope="line{}".format(i)), scope="text", small=True)
         outputString = "{}. ".format(i + 2)
 
-        put_markdown("### Potential Noun-Adjective Agreements", scope="scopeRows")
-        for i in range(totalWords):
-            matches = nearbyMatches(inflsForWordNOLINES, 10, wordsNOLINES, i)
-            if matches != []:
-                put_markdown("*{}*".format(wordsNOLINES[i]), scope="scopeRows")
-                for match in matches:
-                    put_markdown(
-                        "- {}: {} {} {}".format(match[1], match[2]['case'], match[2]['gend'], match[2]['num']),
-                        scope="scopeRows")
+    put_markdown("### Potential Noun-Adjective Agreements", scope="scopeRows")
+    for i in range(totalWords):
+        matches = nearbyMatches(inflsForWordNOLINES, 10, wordsNOLINES, i)
+        if matches != []:
+            put_markdown("*{}*".format(wordsNOLINES[i]), scope="scopeRows")
+            for match in matches:
+                put_markdown(
+                    "- {}: {} {} {}".format(match[1], match[2]['case'], match[2]['gend'], match[2]['num']),
+                    scope="scopeRows")
 
 
 def goBack():
@@ -206,11 +206,11 @@ def goBack():
 def startApp():
     pywebio.config(title="Latin Text Scanner",
                    description="Provides translations and grammatical information on latin poetry/prose",
-                   css_style="{background-color: light-blue}",
+                   css_style="""""",
                    js_code=js_code,
                    js_file=js_file)
 
-    put_markdown("""# Latin Text Scanner""")
+    put_html("""<h1 style="font-weight: 600; letter-spacing: 3px; text-shadow: 1px 1px #000000; color:#3990fa"><center>Latin Text Scanner</center></h1>""")
 
     loadHomePage()
 
