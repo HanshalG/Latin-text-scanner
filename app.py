@@ -10,7 +10,7 @@ import latindictionary_io
 from pywebio.session import set_env
 #from scansion import scan_lines
 
-js_file = "https://www.googletagmanager.com/gtag/js?id=G-xxxxxxx"
+js_file = "https://www.googletagmanager.com/gtag/js?id=G-21Q3SXV68D"
 js_code = """
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
