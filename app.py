@@ -79,7 +79,7 @@ def linesEntered(text):
 
                         #entry is noun format as case number declension
                         if info['pofs'] == 'noun':
-                            grammarInfo.append("Noun: {0} {1} {2} Declension".format(info['case'], info['num'], info['decl']))
+                            grammarInfo.append("Noun: **{0}** {1} {2} Declension".format(info['case'], info['num'], info['decl']))
                         #verb  person number tense voice mood
                         elif info['pofs'] == 'verb':
                             try:
