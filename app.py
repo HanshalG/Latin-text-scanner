@@ -293,10 +293,13 @@ def nearbyMatches(inflsInfo, searchRadius, words, targetIndex):
                 for inflTarget in inflsInfo[targetIndex + i]:
                     for inflMain in inflsInfo[targetIndex]:
                         if (inflMain['pofs'] == 'noun' and inflTarget['pofs'] == 'adjective') or (inflMain['pofs'] == 'adjective' and inflTarget['pofs'] == 'noun'):
-                            if inflMain['case'] == inflTarget['case'] and inflMain['gend'] == inflTarget['gend'] and inflMain['num'] == inflTarget['num']:
-                                matches.append([targetIndex + i, words[targetIndex + i], {"case":inflMain['case'],
-                                                                        "gend":inflMain['gend'],
-                                                                        "num":inflMain['num']}])
+                            try:
+                                if inflMain['case'] == inflTarget['case'] and inflMain['gend'] == inflTarget['gend'] and inflMain['num'] == inflTarget['num']:
+                                    matches.append([targetIndex + i, words[targetIndex + i], {"case":inflMain['case'],
+                                                                            "gend":inflMain['gend'],
+                                                                            "num":inflMain['num']}])
+                            except:
+                                print("Noun doesn't have case,gender or number information")
 
             except IndexError:
                 pass
