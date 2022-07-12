@@ -152,12 +152,6 @@ def linesEntered(text):
     inflsForWordNOLINES = [x for xs in inflsForWord for x in xs]
     wordsNOLINES = [x for xs in processedLines for x in xs]
 
-    put_markdown("# Matches")
-    for i in range(totalWords):
-        matches = nearbyMatches(inflsForWordNOLINES, 10, wordsNOLINES, i)
-        if matches != []:
-            put_text(wordsNOLINES[i], matches)
-
     outputString ="1. "
 
     clear("text")
@@ -180,6 +174,16 @@ def linesEntered(text):
         #put_button("Line {}".format(i + 1), onclick=scroll_to(scope="line{}".format(i)), scope="text", small=True)
         outputString = "{}. ".format(i + 2)
 
+        put_markdown("### Potential Noun-Adjective Agreements", scope="scopeRows")
+        for i in range(totalWords):
+            matches = nearbyMatches(inflsForWordNOLINES, 10, wordsNOLINES, i)
+            if matches != []:
+                put_markdown("*{}*".format(wordsNOLINES[i]), scope="scopeRows")
+                for match in matches:
+                    put_markdown(
+                        "- {}: {} {} {}".format(match[1], match[2]['case'], match[2]['gend'], match[2]['num']),
+                        scope="scopeRows")
+
 
 def goBack():
     remove("scopeRows")
@@ -198,6 +202,10 @@ def startApp():
     loadHomePage()
 
 def loadHomePage():
+
+    #put_html("""
+    #<button style="background:none; border:none;">arma</button> <button style="background:none; border:none;">virumque</button> <button style="background:none; border:none;">cano</button> """)
+    #put_buttons(["arma", "virumque", "cano"], onclick=..., group=True, outline=True)
 
     with use_scope("scopeMain"):
         put_markdown("""This is a latin poetry scanner which can provide translation, scansion and poetic technique suggestions to aid students to interpret latin verse more holistically. Translations, grammar parsing and poetic techniques will be listed under the line numbers and colour coding will be applied to certain graammatical constructs after scanning has finished. 
