@@ -20,6 +20,9 @@ def processLines(inp):
                 if words[i].endswith("que"):
                     tokenised.append(words[i][:-3])
                     tokenised.append("que")
+                if words[i].endswith("ve"):
+                    tokenised.append(words[i][:-2])
+                    tokenised.append("ve")
                 else:
                     tokenised.append(words[i])
             no_integers = [x for x in tokenised if not (x.isdigit()

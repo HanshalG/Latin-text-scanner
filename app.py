@@ -148,7 +148,7 @@ def linesEntered(text):
     conjunctionWords = identifyDefiniteConjunctions(pofsForWord, inflsForWord)
     prepositionWords = identifyDefinitePrepositions(pofsForWord, inflsForWord)
 
-    outputString =""
+    outputString ="1. "
 
     clear("text")
 
@@ -166,8 +166,9 @@ def linesEntered(text):
                 outputString += processedLines[i][j] + " "
 
         put_html("""<p>{}
-            </p>""".format(outputString), scope="text")
-        outputString = ""
+            </p>""".format(outputString), scope="text").style("font-size:14px")
+        #put_button("Line {}".format(i + 1), onclick=scroll_to(scope="line{}".format(i)), scope="text", small=True)
+        outputString = "{}. ".format(i + 2)
 
 
 def goBack():
