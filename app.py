@@ -1,5 +1,6 @@
 import argparse
 
+import pywebio
 from pywebio.input import *
 from pywebio.output import *
 from pywebio import start_server
@@ -8,6 +9,15 @@ from techniques import alliteration, enjambement
 import latindictionary_io
 from pywebio.session import set_env
 #from scansion import scan_lines
+
+js_file = "https://www.googletagmanager.com/gtag/js?id=G-xxxxxxx"
+js_code = """
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', 'G-21Q3SXV68D');
+"""
 
 def linesEntered(text):
 
@@ -194,10 +204,13 @@ def goBack():
 
 
 def startApp():
+    pywebio.config(title="Latin Text Scanner",
+                   description="Provides translations and grammatical information on latin poetry/prose",
+                   css_style="{background-color: light-blue}",
+                   js_code=js_code,
+                   js_file=js_file)
 
-    set_env(title="Latin Poetry Scanner")
-
-    put_markdown("""# Latin Poetry Scanner""")
+    put_markdown("""# Latin Text Scanner""")
 
     loadHomePage()
 
@@ -209,8 +222,6 @@ def loadHomePage():
 
     with use_scope("scopeMain"):
         put_markdown("""This is a latin poetry scanner which can provide translation, scansion and poetic technique suggestions to aid students to interpret latin verse more holistically. Translations, grammar parsing and poetic techniques will be listed under the line numbers and colour coding will be applied to certain graammatical constructs after scanning has finished. 
-            - Make sure to have line breaks inbetween lines
-            - Techniques are just suggestions
 
             Translations and parsing from [latindictionary.io](https://www.latindictionary.io/)""")
         put_markdown("Access latin lines from here: [Latin Library](https://www.thelatinlibrary.com/)")
