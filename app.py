@@ -3,6 +3,7 @@ import argparse
 import pywebio
 from pywebio.input import *
 from pywebio.output import *
+from pywebio.pin import put_select, put_slider, put_textarea
 from pywebio import start_server
 from processLines import processLines, convertWordsIndextoLinesIndex, convertLinesIndexToWordsIndex
 from techniques import alliteration, enjambement
@@ -17,6 +18,30 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 
 gtag('config', 'G-21Q3SXV68D');
+"""
+
+aeneidLines = """Arma virumque canō, Trōiae quī prīmus ab ōrīs
+Ītaliam, fātō profugus, Lāvīniaque vēnit
+lītora, multum ille et terrīs iactātus et altō
+vī superum saevae memorem Iūnōnis ob īram;
+multa quoque et bellō passus, dum conderet urbem,               5
+inferretque deōs Latiō, genus unde Latīnum,
+Albānīque patrēs, atque altae moenia Rōmae.
+
+Mūsa, mihī causās memorā, quō nūmine laesō,
+quidve dolēns, rēgīna deum tot volvere cāsūs
+īnsīgnem pietāte virum, tot adīre labōrēs                                   10
+impulerit. Tantaene animīs caelestibus īrae?
+
+Urbs antīqua fuit, Tyriī tenuēre colōnī,
+Karthāgō, Ītaliam contrā Tiberīnaque longē
+ōstia, dīves opum studiīsque asperrima bellī,
+quam Iūnō fertur terrīs magis omnibus ūnam                           15
+posthabitā coluisse Samō; hīc illius arma,
+hīc currus fuit; hōc rēgnum dea gentibus esse,
+sī quā Fāta sinant, iam tum tenditque fovetque.
+Prōgeniem sed enim Trōiānō ā sanguine dūcī
+audierat, Tyriās olim quae verteret arcēs;                                   20
 """
 
 def linesEntered(text):
@@ -221,36 +246,35 @@ def loadHomePage():
     #put_buttons(["arma", "virumque", "cano"], onclick=..., group=True, outline=True)
 
     with use_scope("scopeMain"):
-        put_markdown("""This is a latin poetry scanner which can provide translation, scansion and poetic technique suggestions to aid students to interpret latin verse more holistically. Translations, grammar parsing and poetic techniques will be listed under the line numbers and colour coding will be applied to certain graammatical constructs after scanning has finished. 
-
-            Translations and parsing from [latindictionary.io](https://www.latindictionary.io/)""")
-        put_markdown("Access latin lines from here: [Latin Library](https://www.thelatinlibrary.com/)")
-        textBox = textarea(placeholder="Enter latin lines here: ", rows=10,
-                           value="""Arma virumque canō, Trōiae quī prīmus ab ōrīs
-Ītaliam, fātō profugus, Lāvīniaque vēnit
-lītora, multum ille et terrīs iactātus et altō
-vī superum saevae memorem Iūnōnis ob īram;
-multa quoque et bellō passus, dum conderet urbem,               5
-inferretque deōs Latiō, genus unde Latīnum,
-Albānīque patrēs, atque altae moenia Rōmae.
-
-Mūsa, mihī causās memorā, quō nūmine laesō,
-quidve dolēns, rēgīna deum tot volvere cāsūs
-īnsīgnem pietāte virum, tot adīre labōrēs                                   10
-impulerit. Tantaene animīs caelestibus īrae?
-
-Urbs antīqua fuit, Tyriī tenuēre colōnī,
-Karthāgō, Ītaliam contrā Tiberīnaque longē
-ōstia, dīves opum studiīsque asperrima bellī,
-quam Iūnō fertur terrīs magis omnibus ūnam                           15
-posthabitā coluisse Samō; hīc illius arma,
-hīc currus fuit; hōc rēgnum dea gentibus esse,
-sī quā Fāta sinant, iam tum tenditque fovetque.
-Prōgeniem sed enim Trōiānō ā sanguine dūcī
-audierat, Tyriās olim quae verteret arcēs;                                   20
-""")
-
-    linesEntered(textBox)
+        put_markdown(
+            """This tool can provide *definitions, morphological information, possible noun-adjective agreements and basic poetic technique suggestions.*
+            It aims to aid students to interpret and translate latin prose and view latin poetry more holistically. 
+                
+            Website source-code: [https://github.com/HanshalG/Latin-text-scanner](https://github.com/HanshalG/Latin-text-scanner)
+            API for definitions and morphological information: [latindictionary.io](https://www.latindictionary.io/)
+            Access latin works: [Latin Library](https://www.thelatinlibrary.com/)"""
+        )
+        put_row([
+            put_scope("right"),
+            put_scope("left")
+        ])
+        put_markdown(
+            "**Text Seperation:** ",
+            scope="left"
+        ).style("padding-left: 20px")
+        put_select("textSeperation", options=['Line Breaks (Poetry)', 'Full Stops (Prose)'], scope="left").style("width: 200px; padding-left: 20px")
+        put_markdown(
+            "**Search Radius For Noun-Adjective Agreements:** ",
+            scope="left"
+        ).style("padding-left: 20px")
+        put_slider("searchRadius", value=5, min_value=2, max_value=15, scope="left").style("width: 200px; padding-left: 20px")
+        put_markdown(
+            "**Input Latin Text:** ",
+            scope="right"
+        )
+        put_textarea("inputText", placeholder="Enter latin lines here: ", rows=10,
+                           value=aeneidLines, scope="right").style("width: 550px")
+        put_button("Submit", lambda : linesEntered(pywebio.pin.pin.inputText), scope="right")
 
 def identifyDefiniteVerbs(pofInfo, inflsInfo):
 
