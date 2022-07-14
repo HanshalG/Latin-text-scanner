@@ -131,19 +131,19 @@ def linesEntered(text):
 
                         #adjective   case gender number
                         elif info['pofs'] == 'adjective':
-                            grammarInfo.append("Adjective: {0} {1} {2}".format(info['case'], info['gend'], info['num']))
+                            grammarInfo.append("Adjective: **{0}** {1} {2}".format(info['case'], info['gend'], info['num']))
                         #conjunction
                         elif info['pofs'] == 'conjunction':
                             grammarInfo.append("Conjunction")
                         #pronoun
                         elif info['pofs'] == 'pronoun':
-                            grammarInfo.append("Pronoun: {} {} {}".format(info['case'], info['gend'], info['num']))
+                            grammarInfo.append("Pronoun: **{}** {} {}".format(info['case'], info['gend'], info['num']))
                         #preposition
                         elif info['pofs'] == "preposition":
                             grammarInfo.append("Preposition")
                         #verb participle
                         elif info['pofs'] == "verb participle":
-                            grammarInfo.append("Verb Participle: {} {} {} {}".format(info['tense'], info['case'], info['gend'], info['num']))
+                            grammarInfo.append("Verb Participle: {} **{}** {} {}".format(info['tense'], info['case'], info['gend'], info['num']))
                         else:
                             grammarInfo.append("{}: {}".format(info['pofs'], info))
 
@@ -234,8 +234,8 @@ def startApp():
                    css_style="""@import url('https://fonts.googleapis.com/css2?family=Merriweather&display=swap');
                    body{font-family: 'Merriweather', serif;}
                    h1{background-color: lightblue; padding-top: 10px; padding-bottom: 10px}""",
-                   js_code=js_code,
-                   js_file=js_file)
+                   js_file=js_file,
+                   js_code=js_code)
 
     put_html("""<h1 style="font-weight: 600; letter-spacing: 3px; text-shadow: 1px 1px #000000; color: white"><center>Latin Text Scanner</center></h1>""")
 
@@ -263,12 +263,12 @@ def loadHomePage():
             "**Text Seperation:** ",
             scope="left"
         ).style("padding-left: 20px")
-        put_select("textSeperation", options=['Line Breaks (Poetry)', 'Full Stops (Prose)'], scope="left").style("width: 200px; padding-left: 20px")
+        put_select("textSeperation", options=['Line Breaks (Poetry)', 'Full Stops (Prose)'], scope="left").style("width: 230px; padding-left: 20px")
         put_markdown(
             "**Search Radius For Noun-Adjective Agreements:** ",
             scope="left"
         ).style("padding-left: 20px")
-        put_slider("searchRadius", value=5, min_value=2, max_value=15, scope="left").style("width: 200px; padding-left: 20px")
+        put_slider("searchRadius", value=5, min_value=2, max_value=15, scope="left").style("width: 250px; padding-left: 20px")
         put_markdown(
             "**Input Latin Text:** ",
             scope="right"
