@@ -231,11 +231,13 @@ def goBack():
 def startApp():
     pywebio.config(title="Latin Text Scanner",
                    description="Provides translations and grammatical information on latin poetry/prose",
-                   css_style="""""",
+                   css_style="""@import url('https://fonts.googleapis.com/css2?family=Merriweather&display=swap');
+                   body{font-family: 'Merriweather', serif;}
+                   h1{background-color: lightblue; padding-top: 10px; padding-bottom: 10px}""",
                    js_code=js_code,
                    js_file=js_file)
 
-    put_html("""<h1 style="font-weight: 600; letter-spacing: 3px; text-shadow: 1px 1px #000000; color:#3990fa"><center>Latin Text Scanner</center></h1>""")
+    put_html("""<h1 style="font-weight: 600; letter-spacing: 3px; text-shadow: 1px 1px #000000; color: white"><center>Latin Text Scanner</center></h1>""")
 
     loadHomePage()
 
@@ -247,12 +249,11 @@ def loadHomePage():
 
     with use_scope("scopeMain"):
         put_markdown(
-            """This tool can provide *definitions, morphological information, possible noun-adjective agreements and basic poetic technique suggestions.*
-            It aims to aid students to interpret and translate latin prose and view latin poetry more holistically. 
+            """This tool can provide **definitions, morphological information, possible noun-adjective agreements and basic poetic technique suggestions.** It is extremely helpful in aiding students to interpret and translate latin prose and view latin poetry more holistically. If you find the tool useful please share it with your fellow latin students!:) 
                 
-            Website source-code: [https://github.com/HanshalG/Latin-text-scanner](https://github.com/HanshalG/Latin-text-scanner)
-            API for definitions and morphological information: [latindictionary.io](https://www.latindictionary.io/)
-            Access latin works: [Latin Library](https://www.thelatinlibrary.com/)"""
+            Website source-code: *[https://github.com/HanshalG/Latin-text-scanner](https://github.com/HanshalG/Latin-text-scanner)*
+            Access latin works: *[Latin Library](https://www.thelatinlibrary.com/)*
+            API for definitions and morphological information: *[latindictionary.io](https://www.latindictionary.io/)*"""
         )
         put_row([
             put_scope("right"),
