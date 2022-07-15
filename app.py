@@ -210,14 +210,28 @@ def linesEntered(text):
         outputString = "{}. ".format(i + 2)
 
     put_markdown("### Potential Noun-Adjective Agreements", scope="scopeRows")
+    outputString = ""
     for i in range(totalWords):
         matches = nearbyMatches(inflsForWordNOLINES, 10, wordsNOLINES, i)
+        indexMain = convertWordsIndextoLinesIndex(i, processedLines)
         if matches != []:
-            put_markdown("*{}*".format(wordsNOLINES[i]), scope="scopeRows")
+            outputString += "<b>" + str(wordsNOLINES[i]) + " Line {}</b>".format(indexMain[0] + 1)
+            l = []
             for match in matches:
-                put_markdown(
-                    "- {}: {} {} {}".format(match[1], match[2]['case'], match[2]['gend'], match[2]['num']),
-                    scope="scopeRows")
+                indexTarget = convertWordsIndextoLinesIndex(match[0], processedLines)
+                l.append(" - <b>{} Line {}</b>: {} {} {}".format(match[1], indexTarget[0] + 1, match[2]['case'], match[2]['gend'], match[2]['num']))
+                outputString += "<br>" + "<br>".join(l)
+
+            #print(outputString)
+
+            put_html("""<div class="card" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); margin-bottom: 10px;">
+              <div class="container">
+                <p>{}</p>
+              </div>
+            </div>
+                        """.format(outputString), scope="scopeRows")
+
+            outputString =""
 
 
 def goBack():
@@ -233,7 +247,8 @@ def startApp():
                    description="Provides translations and grammatical information on latin poetry/prose",
                    css_style="""@import url('https://fonts.googleapis.com/css2?family=Merriweather&display=swap');
                    body{font-family: 'Merriweather', serif;}
-                   h1{background-color: lightblue; padding-top: 10px; padding-bottom: 10px}""",
+                   h1{background-color: lightblue; padding-top: 10px; padding-bottom: 10px}
+                   """,
                    js_file=js_file,
                    js_code=js_code)
 

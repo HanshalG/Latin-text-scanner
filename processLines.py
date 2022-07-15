@@ -40,19 +40,19 @@ def removePunctuation(inp):
 def convertLinesIndexToWordsIndex(inp, processed):
     #inp [i,j]
     x = 0
-    for i in range(processed):
-        for j in range(processed[i]):
-            x+=1
+    for i in range(len(processed)):
+        for j in range((processed[i])):
             if inp == [i,j]:
                 return x
+            x+=1
     return None
 
 def convertWordsIndextoLinesIndex(inp, processed):
 
     x = 0
 
-    for i in range(processed):
-        for j in range(processed[i]):
-            x += 1
+    for i in range(len(processed)):
+        for j in range(len(processed[i])):
             if inp == x:
                 return [i, j]
+            x += 1
