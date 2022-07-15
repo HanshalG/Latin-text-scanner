@@ -229,7 +229,7 @@ def goBack():
 
 
 def startApp():
-    pywebio.config(title="Latin Text Scanner",
+    pywebio.config(title="Latin Helper",
                    description="Provides translations and grammatical information on latin poetry/prose",
                    css_style="""@import url('https://fonts.googleapis.com/css2?family=Merriweather&display=swap');
                    body{font-family: 'Merriweather', serif;}
@@ -237,7 +237,7 @@ def startApp():
                    js_file=js_file,
                    js_code=js_code)
 
-    put_html("""<h1 style="font-weight: 600; letter-spacing: 3px; text-shadow: 1px 1px #000000; color: white"><center>Latin Text Scanner</center></h1>""")
+    put_html("""<h1 style="font-weight: 600; letter-spacing: 3px; text-shadow: 1px 1px #000000; color: white"><center>Latin Helper</center></h1>""")
 
     loadHomePage()
 
