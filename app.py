@@ -5,7 +5,7 @@ from pywebio.input import *
 from pywebio.output import *
 from pywebio.pin import put_select, put_slider, put_textarea
 from pywebio import start_server
-from processLines import processLines, convertWordsIndextoLinesIndex, convertLinesIndexToWordsIndex
+from processLines import processLines, convertWordsIndextoLinesIndex, convertLinesIndexToWordsIndex, processLinesSentence
 from techniques import alliteration, enjambement
 import latindictionary_io
 from pywebio.session import set_env
@@ -44,14 +44,18 @@ Prōgeniem sed enim Trōiānō ā sanguine dūcī
 audierat, Tyriās olim quae verteret arcēs;                                   20
 """
 
-def linesEntered(text):
+def linesEntered(text, radius, lineBreaks):
 
     #parser = Parse()
     dictionary = latindictionary_io.Client()
 
     remove(scope="scopeMain")
 
-    processedLines = processLines(text)
+    if lineBreaks == "Line Breaks (Poetry)":
+        processedLines = processLines(text)
+    else:
+        processedLines = processLinesSentence(text)
+        #print(processedLines)
     alliterations = alliteration(processedLines)
     enjambements = enjambement(processedLines)
     techs = alliterations + enjambements
@@ -66,7 +70,7 @@ def linesEntered(text):
             put_scrollable(put_scope("techniques", content=put_text("placeholder")), height=450)
         ])
 
-        put_html("""<b>Colour coding: </b><span style="color: #ff0000">Verb </span> <span style="color: #B0C4DE">Conjunction </span> <span style="color: #0000FF">Preposition </span>""").style("padding-bottom:5px; float: left")
+        put_html("""<b>Colour coding: </b><span style="color: #ff0000">Verb </span> <span style="color: #B0C4DE">Conjunction </span> <span style="color: #0000FF">Preposition </span> <span style="color: #097969">Adverb </Span>""").style("padding-bottom:5px; float: left")
 
 
         put_button('Go back', onclick=goBack, small=True).style("float: right")
@@ -174,15 +178,17 @@ def linesEntered(text):
                 pass
 
             set_processbar(name='translations', value=count/totalWords, label="Scanning")
+            #print(count, totalWords, count/totalWords)
 
     #print(pofsForWord, inflsForWord)
 
     #colour coding logic
 
     verbWords = identifyDefiniteVerbs(pofsForWord, inflsForWord)
-    abldatWords = identifyDefiniteDativeAndAblatives(pofsForWord, inflsForWord)
+    #abldatWords = identifyDefiniteDativeAndAblatives(pofsForWord, inflsForWord)
     conjunctionWords = identifyDefiniteConjunctions(pofsForWord, inflsForWord)
     prepositionWords = identifyDefinitePrepositions(pofsForWord, inflsForWord)
+    adverbWords = identifyDefiniteAdverbs(pofsForWord, inflsForWord)
 
     pofsForWordNOLINES = [x for xs in pofsForWord for x in xs]
     inflsForWordNOLINES = [x for xs in inflsForWord for x in xs]
@@ -202,18 +208,20 @@ def linesEntered(text):
                 outputString += """<span style="color: #B0C4DE">{} </span>""".format(processedLines[i][j])
             elif [i,j] in prepositionWords:
                 outputString += """<span style="color: #0000FF">{} </span>""".format(processedLines[i][j])
+            elif [i,j] in adverbWords:
+                outputString += """<span style="color: #097969">{} </span>""".format(processedLines[i][j])
             else:
                 outputString += processedLines[i][j] + " "
 
         put_html("""<p>{}
             </p>""".format(outputString), scope="text").style("font-size:14px")
-        #put_button("Line {}".format(i + 1), onclick=scroll_to(scope="line{}".format(i)), scope="text", small=True)
+        #put_button("Line {}".format(i + 1), lambda : scroll_to(scope="line{}".format(i)), scope="text", small=True)
         outputString = "{}. ".format(i + 2)
 
     put_html(" <br> <br> <b>Potential Noun-Adjective Agreements</b>", scope="scopeRows").style("float: none; font-size: 18px; margin-bottom: 10px")
     outputString = ""
     for i in range(totalWords):
-        matches = nearbyMatches(inflsForWordNOLINES, 10, wordsNOLINES, i)
+        matches = nearbyMatches(inflsForWordNOLINES, radius, wordsNOLINES, i)
         indexMain = convertWordsIndextoLinesIndex(i, processedLines)
         if matches != []:
             outputString += "<b>" + str(wordsNOLINES[i]) + " (line {})</b>".format(indexMain[0] + 1)
@@ -265,13 +273,14 @@ def loadHomePage():
     #put_buttons(["arma", "virumque", "cano"], onclick=..., group=True, outline=True)
 
     with use_scope("scopeMain"):
-        put_markdown(
-            """This tool can provide **definitions, morphological information, possible noun-adjective agreements and basic poetic technique suggestions.** It is extremely helpful in aiding students to interpret and translate latin prose and view latin poetry more holistically. If you find the tool useful please share it with your fellow latin students!:) 
+        put_html(
+            """This tool can provide <b>definitions, morphological information, possible noun-adjective agreements and basic poetic technique suggestions.</b> It is extremely helpful in aiding students to interpret and translate latin prose and view latin poetry more holistically. If you find the tool useful please share it with your fellow latin students!:) 
                 
-            Website source-code: *[https://github.com/HanshalG/Latin-text-scanner](https://github.com/HanshalG/Latin-text-scanner)*
-            Access latin works: *[Latin Library](https://www.thelatinlibrary.com/)*
-            API for definitions and morphological information: *[latindictionary.io](https://www.latindictionary.io/)*"""
-        )
+            <br><br>Website source-code: <a href="https://github.com/HanshalG/Latin-text-scanner" target="_blank">https://github.com/HanshalG/Latin-text-scanner</a>
+            <br>Access latin works: <a href="https://www.thelatinlibrary.com/" target="_blank">Latin Library</a>
+            <br>API for definitions and morphological information: <a href="https://www.latindictionary.io/" target="_blank">latindictionary.io</a>"""
+        ).style("margin-bottom: 10px")
+
         put_row([
             put_scope("right"),
             put_scope("left")
@@ -292,7 +301,7 @@ def loadHomePage():
         )
         put_textarea("inputText", placeholder="Enter latin lines here: ", rows=10,
                            value=aeneidLines, scope="right").style("width: 550px")
-        put_button("Submit", lambda : linesEntered(pywebio.pin.pin.inputText), scope="right")
+        put_button("Submit", lambda : linesEntered(pywebio.pin.pin.inputText, pywebio.pin.pin.searchRadius, pywebio.pin.pin.textSeperation), scope="right")
 
 def identifyDefiniteVerbs(pofInfo, inflsInfo):
 
@@ -323,6 +332,17 @@ def identifyDefinitePrepositions(pofInfo, inflsInfo):
     for i in range(len(pofInfo)):
         for j in range(len(pofInfo[i])):
             if all(elem == "preposition" for elem in pofInfo[i][j]) and pofInfo[i][j] != []:
+                output.append([i,j])
+
+    return output
+
+def identifyDefiniteAdverbs(pofInfo, inflsInfo):
+
+    output = []
+
+    for i in range(len(pofInfo)):
+        for j in range(len(pofInfo[i])):
+            if all(elem == "adverb" for elem in pofInfo[i][j]) and pofInfo[i][j] != []:
                 output.append([i,j])
 
     return output
