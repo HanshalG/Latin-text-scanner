@@ -61,7 +61,7 @@ def linesEntered(text):
 
         put_processbar('translations', label="Scanning", auto_close=True)
 
-        put_html("""<span style="color: #ff0000">Verb </span> <span style="color: #FF00FF">Ablative/Dative </span> <span style="color: #B0C4DE">Conjunction </span> <span style="color: #0000FF">Preposition </span>""").style("padding-top:10px; padding-bottom:10px")
+        put_html("""<span style="color: #ff0000">Verb </span> <span style="color: #B0C4DE">Conjunction </span> <span style="color: #0000FF">Preposition </span>""").style("padding-top:10px; padding-bottom:10px")
 
         put_row([
             put_scrollable(put_scope("text", content=put_markdown(text).style("line-height: 200%")), height=500),
@@ -195,8 +195,8 @@ def linesEntered(text):
         for j in range(len(processedLines[i])):
             if [i,j] in verbWords:
                 outputString += """<span style="color: #ff0000">{} </span>""".format(processedLines[i][j])
-            elif [i,j] in abldatWords:
-                outputString += """<span style="color: #FF00FF">{} </span>""".format(processedLines[i][j])
+            #elif [i,j] in abldatWords:
+                #outputString += """<span style="color: #FF00FF">{} </span>""".format(processedLines[i][j])
             elif [i, j] in conjunctionWords:
                 outputString += """<span style="color: #B0C4DE">{} </span>""".format(processedLines[i][j])
             elif [i,j] in prepositionWords:
@@ -220,7 +220,8 @@ def linesEntered(text):
             for match in matches:
                 indexTarget = convertWordsIndextoLinesIndex(match[0], processedLines)
                 l.append(" - <b>{} Line {}</b>: {} {} {}".format(match[1], indexTarget[0] + 1, match[2]['case'], match[2]['gend'], match[2]['num']))
-                outputString += "<br>" + "<br>".join(l)
+
+            outputString += "<br>" + "<br>".join(l)
 
             #print(outputString)
 
