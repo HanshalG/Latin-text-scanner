@@ -59,16 +59,17 @@ def linesEntered(text):
 
     with use_scope("scopeRows"):
 
-        put_processbar('translations', label="Scanning", auto_close=True)
-
-        put_html("""<span style="color: #ff0000">Verb </span> <span style="color: #B0C4DE">Conjunction </span> <span style="color: #0000FF">Preposition </span>""").style("padding-top:10px; padding-bottom:10px")
+        put_processbar('translations', label="Scanning", auto_close=True).style("margin-bottom: 5px")
 
         put_row([
-            put_scrollable(put_scope("text", content=put_markdown(text).style("line-height: 200%")), height=500),
-            put_scrollable(put_scope("techniques", content=put_text("placeholder")), height=500)
+            put_scrollable(put_scope("text", content=put_markdown(text).style("line-height: 200%")), height=450),
+            put_scrollable(put_scope("techniques", content=put_text("placeholder")), height=450)
         ])
 
-        put_button('Go back', onclick=goBack)
+        put_html("""<b>Colour coding: </b><span style="color: #ff0000">Verb </span> <span style="color: #B0C4DE">Conjunction </span> <span style="color: #0000FF">Preposition </span>""").style("padding-bottom:5px; float: left")
+
+
+        put_button('Go back', onclick=goBack, small=True).style("float: right")
 
     with use_scope('techniques', clear=True):
         for i in range(len(processedLines)):
@@ -209,23 +210,23 @@ def linesEntered(text):
         #put_button("Line {}".format(i + 1), onclick=scroll_to(scope="line{}".format(i)), scope="text", small=True)
         outputString = "{}. ".format(i + 2)
 
-    put_markdown("### Potential Noun-Adjective Agreements", scope="scopeRows")
+    put_html(" <br> <br> <b>Potential Noun-Adjective Agreements</b>", scope="scopeRows").style("float: none; font-size: 18px; margin-bottom: 10px")
     outputString = ""
     for i in range(totalWords):
         matches = nearbyMatches(inflsForWordNOLINES, 10, wordsNOLINES, i)
         indexMain = convertWordsIndextoLinesIndex(i, processedLines)
         if matches != []:
-            outputString += "<b>" + str(wordsNOLINES[i]) + " Line {}</b>".format(indexMain[0] + 1)
+            outputString += "<b>" + str(wordsNOLINES[i]) + " (line {})</b>".format(indexMain[0] + 1)
             l = []
             for match in matches:
                 indexTarget = convertWordsIndextoLinesIndex(match[0], processedLines)
-                l.append(" - <b>{} Line {}</b>: {} {} {}".format(match[1], indexTarget[0] + 1, match[2]['case'], match[2]['gend'], match[2]['num']))
+                l.append(" - <b>{} (line {})</b>: {} {} {}".format(match[1], indexTarget[0] + 1, match[2]['case'], match[2]['gend'], match[2]['num']))
 
             outputString += "<br>" + "<br>".join(l)
 
             #print(outputString)
 
-            put_html("""<div class="card" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); margin-bottom: 10px;">
+            put_html("""<div class="card" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); margin-bottom: 15px;">
               <div class="container">
                 <p>{}</p>
               </div>
@@ -253,7 +254,7 @@ def startApp():
                    js_file=js_file,
                    js_code=js_code)
 
-    put_html("""<h1 style="font-weight: 600; letter-spacing: 3px; text-shadow: 1px 1px #000000; color: white"><center>Latin Helper</center></h1>""")
+    put_html("""<h1 style="font-weight: 600; letter-spacing: 3px; text-shadow: 1px 1px #FFFFFF; color: black"><center>Latin Helper</center></h1>""")
 
     loadHomePage()
 
