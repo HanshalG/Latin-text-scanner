@@ -255,14 +255,14 @@ def goBack():
 def startApp():
     pywebio.config(title="Latin Helper",
                    description="Provides translations and grammatical information on latin poetry/prose",
-                   css_style="""@import url('https://fonts.googleapis.com/css2?family=Merriweather&display=swap');
-                   body{font-family: 'Merriweather', serif;}
-                   h1{background-color: lightblue; padding-top: 10px; padding-bottom: 10px}
+                   css_style="""@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');');
+                   body{font-family: 'Roboto', sans-serif;}
+                   h1{padding-top: 10px; padding-bottom: 10px'}
                    """,
                    js_file=js_file,
                    js_code=js_code)
 
-    put_html("""<h1 style="font-weight: 600; letter-spacing: 3px; text-shadow: 1px 1px #FFFFFF; color: black"><center>Latin Helper</center></h1>""")
+    put_html("""<h1 style="font-weight: 280; letter-spacing: 2px; font-size: 50px"><center><span style="font-weight:700">Latin</span><span>Helper</span></center></h1>""")
 
     loadHomePage()
 
@@ -299,8 +299,9 @@ def loadHomePage():
             "**Input Latin Text:** ",
             scope="right"
         )
-        put_textarea("inputText", placeholder="Enter latin lines here: ", rows=10,
-                           value=aeneidLines, scope="right").style("width: 550px")
+        put_textarea("inputText", placeholder="Enter here: ", rows=10,
+                           #value=aeneidLines,
+                     scope="right").style("width: 550px")
         put_button("Submit", lambda : linesEntered(pywebio.pin.pin.inputText, pywebio.pin.pin.searchRadius, pywebio.pin.pin.textSeperation), scope="right")
 
 def identifyDefiniteVerbs(pofInfo, inflsInfo):
