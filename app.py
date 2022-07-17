@@ -257,12 +257,11 @@ def startApp():
                    description="Provides translations and grammatical information on latin poetry/prose",
                    css_style="""@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');');
                    body{font-family: 'Roboto', sans-serif;}
-                   h1{padding-top: 10px; padding-bottom: 10px'}
                    """,
                    js_file=js_file,
                    js_code=js_code)
 
-    put_html("""<h1 style="font-weight: 280; letter-spacing: 2px; font-size: 50px"><center><span style="font-weight:700">Latin</span><span>Helper</span></center></h1>""")
+    put_html("""<h1 style="font-weight: 280; letter-spacing: 2px; font-size: 45px"><center><span style="font-weight:700">Latin</span><span>Helper</span></center></h1>""")
 
     loadHomePage()
 
