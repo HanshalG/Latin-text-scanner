@@ -234,7 +234,7 @@ def linesEntered(text, radius, lineBreaks):
 
             #print(outputString)
 
-            put_html("""<div class="card" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); margin-bottom: 15px;">
+            put_html("""<div class="card" style="margin-bottom: 15px;">
               <div class="container">
                 <p>{}</p>
               </div>
@@ -261,7 +261,7 @@ def startApp():
                    js_file=js_file,
                    js_code=js_code)
 
-    put_html("""<h1 style="font-weight: 280; letter-spacing: 2px; font-size: 45px"><center><span style="font-weight:700">Latin</span><span>Helper</span></center></h1>""")
+    put_html("""<h1 style="font-weight: 280; font-size: 45px"><center><span style="font-weight:700">Latin</span><span>Helper</span></center></h1>""")
 
     loadHomePage()
 
