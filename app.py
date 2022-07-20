@@ -253,13 +253,7 @@ def goBack():
 
 
 def startApp():
-    pywebio.config(title="Latin Helper",
-                   description="Provides translations and grammatical information on latin poetry/prose",
-                   css_style="""@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');');
-                   body{font-family: 'Roboto', sans-serif;}
-                   """,
-                   js_file=js_file,
-                   js_code=js_code)
+    set_env(title="Latin Helper", output_animation=False, output_max_width=950)
 
     put_html("""<h1 style="font-weight: 280; font-size: 45px"><center><span style="font-weight:700">Latin</span><span>Helper</span></center></h1>""")
 
@@ -389,8 +383,17 @@ def nearbyMatches(inflsInfo, searchRadius, words, targetIndex):
 
 
 if __name__ == "__main__":
+
+    pywebio.config(title="Latin Helper",
+                   description="Provides translations and grammatical information on latin poetry/prose",
+                   css_style="""@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');');
+                       body{font-family: 'Roboto', sans-serif;}
+                       """,
+                   js_file=js_file,
+                   js_code=js_code)
+
     parser = argparse.ArgumentParser()
     parser.add_argument('-p', '--port', type=int, default=8080)
     args = parser.parse_args()
-    start_server(startApp, port=args.port)
+    start_server(startApp, port=args.port, websocket_ping_interval=30)
 
