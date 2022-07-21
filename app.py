@@ -9,6 +9,7 @@ from processLines import processLines, convertWordsIndextoLinesIndex, convertLin
 from techniques import alliteration, enjambement
 import latindictionary_io
 from pywebio.session import set_env
+from pywebio import session
 #from scansion import scan_lines
 
 js_file = "https://www.googletagmanager.com/gtag/js?id=G-21Q3SXV68D"
@@ -254,6 +255,7 @@ def goBack():
 
 def startApp():
     set_env(title="Latin Helper", output_animation=False, output_max_width=950)
+    session.run_js('WebIO._state.CurrentSession.on_session_close(()=>{setTimeout(()=>location.reload(), 4000})')
 
     put_html("""<h1 style="font-weight: 280; font-size: 45px"><center><span style="font-weight:700">Latin</span><span>Helper</span></center></h1>""")
 
@@ -296,6 +298,8 @@ def loadHomePage():
                            #value=aeneidLines,
                      scope="right").style("width: 550px")
         put_button("Submit", lambda : linesEntered(pywebio.pin.pin.inputText, pywebio.pin.pin.searchRadius, pywebio.pin.pin.textSeperation), scope="right")
+        put_button("Test Lines", lambda: linesEntered(aeneidLines, pywebio.pin.pin.searchRadius,
+                                                  pywebio.pin.pin.textSeperation), color="danger", scope="left", small=True).style("padding-left: 20px")
 
 def identifyDefiniteVerbs(pofInfo, inflsInfo):
 
