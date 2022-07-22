@@ -67,8 +67,11 @@ def linesEntered(text, radius, lineBreaks):
         put_processbar('translations', label="Scanning", auto_close=True).style("margin-bottom: 5px")
 
         put_row([
-            put_scrollable(put_scope("text", content=put_markdown(text).style("line-height: 200%")), height=450),
-            put_scrollable(put_scope("techniques", content=put_text("placeholder")), height=450)
+            put_scrollable(put_scope("text", content=put_markdown(text).style("line-height: 200%")), height=500),
+            put_tabs([
+                {'title': "Definitions", "content": put_scrollable(put_scope("techniques"), height=425).style("margin: -15px")},
+                {'title': "Noun-Adj Agreements", "content": put_scrollable(put_scope("agreements"), height=425).style("margin: -15px")}
+            ]).style("margin-top: 0px; height:500px")
         ])
 
         put_html("""<b>Colour coding: </b><span style="color: #ff0000">Verb </span> <span style="color: #B0C4DE">Conjunction </span> <span style="color: #0000FF">Preposition </span> <span style="color: #097969">Adverb </Span>""").style("padding-bottom:5px; float: left")
@@ -219,7 +222,7 @@ def linesEntered(text, radius, lineBreaks):
         #put_button("Line {}".format(i + 1), lambda : scroll_to(scope="line{}".format(i)), scope="text", small=True)
         outputString = "{}. ".format(i + 2)
 
-    put_html(" <br> <br> <b>Potential Noun-Adjective Agreements</b>", scope="scopeRows").style("float: none; font-size: 18px; margin-bottom: 10px")
+    #put_html(" <br> <br> <b>Potential Noun-Adjective Agreements</b>", scope="scopeRows").style("float: none; font-size: 18px; margin-bottom: 10px")
     outputString = ""
     for i in range(totalWords):
         matches = nearbyMatches(inflsForWordNOLINES, radius, wordsNOLINES, i)
@@ -240,7 +243,7 @@ def linesEntered(text, radius, lineBreaks):
                 <p>{}</p>
               </div>
             </div>
-                        """.format(outputString), scope="scopeRows")
+                        """.format(outputString), scope="agreements")
 
             outputString =""
 
