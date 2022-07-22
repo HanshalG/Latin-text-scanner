@@ -392,7 +392,7 @@ def nearbyMatches(inflsInfo, searchRadius, words, targetIndex):
 if __name__ == "__main__":
 
     pywebio.config(title="Latin Helper",
-                   description="Provides translations and grammatical information on latin poetry/prose",
+                   description="This tool can provide definitions, morphological information, possible noun-adjective agreements and basic poetic technique suggestions. It is extremely helpful in aiding students to interpret and translate latin prose and view latin poetry more holistically. If you find the tool useful please share it with your fellow latin students!:)",
                    css_style="""@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');');
                        body{font-family: 'Roboto', sans-serif;}
                        """,
