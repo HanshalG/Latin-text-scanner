@@ -69,8 +69,8 @@ def linesEntered(text, radius, lineBreaks):
         put_row([
             put_scrollable(put_scope("text", content=put_markdown(text).style("line-height: 200%")), height=500),
             put_tabs([
-                {'title': "Definitions", "content": put_scrollable(put_scope("techniques"), height=425).style("margin: -15px")},
-                {'title': "Noun-Adj Agreements", "content": put_scrollable(put_scope("agreements"), height=425).style("margin: -15px")}
+                {'title': "Definitions", "content": put_scrollable(put_scope("techniques"), height=455).style("margin: -15px")},
+                {'title': "Noun-Adj Agreements", "content": put_scrollable(put_scope("agreements"), height=455).style("margin: -15px")}
             ]).style("margin-top: 0px; height:500px")
         ])
 
