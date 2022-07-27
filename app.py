@@ -1,5 +1,5 @@
 import argparse
-
+import thelatinlibrary
 import pywebio
 from pywebio.input import *
 from pywebio.output import *
@@ -11,6 +11,7 @@ import latindictionary_io
 from pywebio.session import set_env
 from pywebio import session
 #from scansion import scan_lines
+from functools import partial
 
 js_file = "https://www.googletagmanager.com/gtag/js?id=G-21Q3SXV68D"
 js_code = """
@@ -238,12 +239,13 @@ def linesEntered(text, radius, lineBreaks):
 
             #print(outputString)
 
-            put_html("""<div class="card" style="margin-bottom: 15px;">
+            put_html("""
+            <div class="card" style="margin-bottom: 15px;">
               <div class="container">
                 <p>{}</p>
               </div>
             </div>
-                        """.format(outputString), scope="agreements")
+                        """.format(outputString), scope="agreements").onclick(lambda: cardSelected())
 
             outputString =""
 
@@ -303,6 +305,35 @@ def loadHomePage():
         put_button("Submit", lambda : linesEntered(pywebio.pin.pin.inputText, pywebio.pin.pin.searchRadius, pywebio.pin.pin.textSeperation), scope="right")
         put_button("Test Lines", lambda: linesEntered(aeneidLines, pywebio.pin.pin.searchRadius,
                                                   pywebio.pin.pin.textSeperation), color="danger", scope="left", small=True).style("padding-left: 20px")
+        #Make tabs dictionary
+        authorList = [
+            'virgil', 'caesar', 'augustus', 'cicero', 'gellius', 'livy', 'lucan', 'ovid', 'sallust', 'tacitus'
+        ]
+
+        authorsData = []
+
+        tabsDicts = []
+        for i in range(len(authorList)):
+            author = thelatinlibrary.get_author_by_name(authorList[i])
+            authorsData.append(author)
+            tabsDicts.append({
+                'title': author.name,
+                'content': put_scope("{}".format(i))
+            })
+
+            #put_text("efsfes", scope="content0")
+
+        put_html("<h3>Latin Library Text Selector (BETA)</h3>")
+
+        put_tabs(tabsDicts)
+
+        for i in range(len(authorsData)):
+            for j in range(len(authorsData[i].works().sections)):
+                #print(authorsData[i].works().sections[j].name)
+                put_collapse(authorsData[i].works().sections[j].name, content=put_scope('{}{}'.format(i,j)), scope='{}'.format(i))
+
+                for t in range(len(authorsData[i].works().sections[j].tomes)):
+                    put_button(authorsData[i].works().sections[j].tomes[t].name, scope="{}{}".format(i,j), link_style=True, onclick=partial(linesEnteredLL, tome=authorsData[i].works().sections[j].tomes[t], sr=pywebio.pin.pin.searchRadius, ts=pywebio.pin.pin.textSeperation))
 
 def identifyDefiniteVerbs(pofInfo, inflsInfo):
 
@@ -388,13 +419,22 @@ def nearbyMatches(inflsInfo, searchRadius, words, targetIndex):
 
     return matches
 
+def cardSelected():
+    return
+
+def linesEnteredLL(tome, sr, ts):
+    textJoined = ''.join(tome.text())
+    print('fesfesf')
+    print(textJoined)
+    linesEntered(textJoined,sr,ts)
+
 
 if __name__ == "__main__":
 
-    pywebio.config(title="Latin Helper",
+    pywebio.config(title="Latin Helper - A Latin prose/poetry scanning tool",
                    description="This tool can provide definitions, morphological information, possible noun-adjective agreements and basic poetic technique suggestions. It is extremely helpful in aiding students to interpret and translate latin prose and view latin poetry more holistically. If you find the tool useful please share it with your fellow latin students!:)",
                    css_style="""@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');');
-                       body{font-family: 'Roboto', sans-serif;}
+                       body{font-family: 'Roboto', sans-serif;};
                        """,
                    js_file=js_file,
                    js_code=js_code)
