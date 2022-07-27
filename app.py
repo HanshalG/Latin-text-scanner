@@ -259,7 +259,7 @@ def goBack():
 
 
 def startApp():
-    set_env(title="Latin Helper", output_animation=False, output_max_width=1000)
+    set_env(title="Latin Helper - A Latin prose/poetry scanning tool", output_animation=False, output_max_width=1000)
     session.run_js('WebIO._state.CurrentSession.on_session_close(()=>{setTimeout(()=>location.reload(), 4000})')
 
     put_html("""<h1 style="font-weight: 280; font-size: 45px"><center><span style="font-weight:700">Latin</span><span>Helper</span></center></h1>""")
