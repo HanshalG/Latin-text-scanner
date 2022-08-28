@@ -322,7 +322,7 @@ def loadHomePage():
             })
 
             #put_text("efsfes", scope="content0")
-
+        '''
         put_html("<h3>Latin Library Text Selector (BETA)</h3>")
 
         put_tabs(tabsDicts)
@@ -334,7 +334,7 @@ def loadHomePage():
 
                 for t in range(len(authorsData[i].works().sections[j].tomes)):
                     put_button(authorsData[i].works().sections[j].tomes[t].name, scope="{}{}".format(i,j), link_style=True, onclick=partial(linesEnteredLL, tome=authorsData[i].works().sections[j].tomes[t], sr=pywebio.pin.pin.searchRadius, ts=pywebio.pin.pin.textSeperation))
-
+        '''
 def identifyDefiniteVerbs(pofInfo, inflsInfo):
 
     output = []
