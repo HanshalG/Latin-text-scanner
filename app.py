@@ -12,6 +12,7 @@ from pywebio.session import set_env
 from pywebio import session
 #from scansion import scan_lines
 from functools import partial
+#from lamonpy import Lamon
 
 js_file = "https://www.googletagmanager.com/gtag/js?id=G-21Q3SXV68D"
 js_code = """
@@ -50,7 +51,7 @@ def linesEntered(text, radius, lineBreaks):
 
     #parser = Parse()
     dictionary = latindictionary_io.Client()
-
+    #lamon = Lamon()
     remove(scope="scopeMain")
 
     if lineBreaks == "Line Breaks (Poetry)":
@@ -102,7 +103,14 @@ def linesEntered(text, radius, lineBreaks):
     for i in range(len(processedLines)):
         for j in range(len(processedLines[i])):
             count +=1
+            #score, tagged = lamon.tag(processedLines[i][j])[0]
+            #print(tagged)
+
             put_markdown("### " + processedLines[i][j], scope="line{}".format(i))
+
+            #prediction from tagger
+            #put_markdown("Prediction: {}".format(tagged[0][3]), scope="line{}".format(i))
+
             try:
                 data = dictionary.analyze_word(processedLines[i][j])
                 for entry in data[0]:
@@ -275,7 +283,7 @@ def loadHomePage():
     with use_scope("scopeMain"):
         put_html(
             """
-            <span style="color: #FF0000"> 28th Jan: Currently in process of updating to new latindictionary.io API, dictionary features are unavailable </span>
+            <span style="color: #FF0000"> 15th Jan: Currently in process of updating to new latindictionary.io API, dictionary features are unavailable </span>
             <br><br> This tool can provide <b>definitions, morphological information, possible noun-adjective agreements and basic poetic technique suggestions.</b> It is extremely helpful in aiding students to interpret and translate latin prose and view latin poetry more holistically. If you find the tool useful please share it with your fellow latin students!:) 
             <br><br>Website source-code: <a href="https://github.com/HanshalG/Latin-text-scanner" target="_blank">https://github.com/HanshalG/Latin-text-scanner</a>
             <br>Access latin works: <a href="https://www.thelatinlibrary.com/" target="_blank">Latin Library</a>
