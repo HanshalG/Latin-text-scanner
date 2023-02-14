@@ -12,6 +12,7 @@ from pywebio.session import set_env
 from pywebio import session
 #from scansion import scan_lines
 from functools import partial
+from lamonpy import Lamon
 
 js_file = "https://www.googletagmanager.com/gtag/js?id=G-21Q3SXV68D"
 js_code = """
@@ -50,7 +51,7 @@ def linesEntered(text, radius, lineBreaks):
 
     #parser = Parse()
     dictionary = latindictionary_io.Client()
-
+    lamon = Lamon()
     remove(scope="scopeMain")
 
     if lineBreaks == "Line Breaks (Poetry)":
@@ -102,7 +103,14 @@ def linesEntered(text, radius, lineBreaks):
     for i in range(len(processedLines)):
         for j in range(len(processedLines[i])):
             count +=1
+            score, tagged = lamon.tag(processedLines[i][j])[0]
+            #print(tagged)
+
             put_markdown("### " + processedLines[i][j], scope="line{}".format(i))
+
+            #prediction from tagger
+            put_markdown("Prediction: {}".format(tagged[0][3]), scope="line{}".format(i))
+
             try:
                 data = dictionary.analyze_word(processedLines[i][j])
                 for entry in data[0]:
