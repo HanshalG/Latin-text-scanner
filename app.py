@@ -312,8 +312,8 @@ def loadHomePage():
                            #value=aeneidLines,
                      scope="right").style("width: 550px")
         put_button("Submit", lambda : linesEntered(pywebio.pin.pin.inputText, pywebio.pin.pin.searchRadius, pywebio.pin.pin.textSeperation), scope="right")
-        put_button("Test Lines", lambda: linesEntered(aeneidLines, pywebio.pin.pin.searchRadius,
-                                                  pywebio.pin.pin.textSeperation), color="danger", scope="left", small=True).style("padding-left: 20px")
+        #put_button("Test Lines", lambda: linesEntered(aeneidLines, pywebio.pin.pin.searchRadius,
+        #                                          pywebio.pin.pin.textSeperation), color="danger", scope="left", small=True).style("padding-left: 20px")
         #Make tabs dictionary
         authorList = [
             'virgil', 'caesar', 'augustus', 'cicero', 'gellius', 'livy', 'lucan', 'ovid', 'sallust', 'tacitus'
